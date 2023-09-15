@@ -13,8 +13,19 @@ class DateProvider extends ChangeNotifier {
     'Domingo',
   ];
 
-  String ddmmyyyy() =>
+  String get ddmmyyyy =>
       "${_actualTime.day}/${_actualTime.month}/${_actualTime.year}";
 
-  String weekday() => formatWeekdays[_actualTime.weekday - 1];
+  String get weekday => formatWeekdays[_actualTime.weekday - 1];
+
+  String get wellcomeMessage {
+    int hour = _actualTime.hour;
+    if (hour > 16) {
+      return 'Buenas noches';
+    } else if (hour > 12) {
+      return 'Buenas tardes';
+    } else {
+      return 'Buenos días';
+    }
+  }
 }

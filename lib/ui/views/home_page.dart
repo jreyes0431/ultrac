@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrac/model/model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,26 +34,44 @@ class _HomePageState extends State<HomePage> {
         visible: true,
         replacement: const CircularProgressIndicator.adaptive(),
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const Text("Tu gran lista de tareas"),
-              Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Text(DateTime.now().toLocal().toString()),
-                  Spacer(),
-                  Text('% completado'),
-                  const SizedBox(width: 20),
-                ],
-              ),
-              const Row(
-                children: [Text("X"), Text("Tareas")],
-              ),
-              const LinearProgressIndicator(
-                value: 70 / 100,
-              ),
-              //TODO(jose): add todo list
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                Text(context.read<DateProvider>().wellcomeMessage),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(context.watch<DateProvider>().ddmmyyyy),
+                    Text(
+                      '${(context.watch<UserProvider>().user.completedTodos * 100) / context.watch<UserProvider>().user.totalTodos}% completado',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 100),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${context.watch<UserProvider>().user.totalTodos.toInt()}',
+                      ),
+                      const Text("Tareas completadas"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  child: LinearProgressIndicator(
+                    value: context.watch<UserProvider>().user.completedTodos /
+                        context.watch<UserProvider>().user.totalTodos,
+                  ),
+                ),
+                //TODO(jose): add todo list
+              ],
+            ),
           ),
         ),
       ),
