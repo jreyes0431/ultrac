@@ -1,3 +1,5 @@
+part of model;
+
 /// Todo model
 class Todo {
   String name;
