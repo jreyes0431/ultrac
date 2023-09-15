@@ -7,7 +7,7 @@ class UserProvider extends ChangeNotifier {
 
   void updateUser(User user) {
     _user.name = user.name;
-    _user.surName = user.surName;
+    _user.surname = user.surname;
     _user.completedTodos = user.completedTodos;
     _user.totalTodos = user.totalTodos;
     notifyListeners();
@@ -18,8 +18,8 @@ class UserProvider extends ChangeNotifier {
       case 'name':
         _user.name = value;
         break;
-      case 'surName':
-        _user.surName = value;
+      case 'surname':
+        _user.surname = value;
         break;
       case 'totalTodos':
         _user.totalTodos = value;
@@ -28,6 +28,7 @@ class UserProvider extends ChangeNotifier {
         _user.completedTodos = value;
         break;
       default:
+        log('ERROR: No se reconoce el campo [$field]');
     }
   }
 }

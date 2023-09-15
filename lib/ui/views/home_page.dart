@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrac/model/model.dart';
+import 'package:ultrac/util/util.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +14,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double screenWidth = 0.0, screenHeigth = 0.0;
+  bool isDataLoaded = false;
+
+  void setUser() async {
+    Map<String, dynamic> data = await Data.getUserData();
+    User currentUser = User(
+      name: data['name'],
+      surname: data['surname'],
+      totalTodos: data['totalTodos'],
+      completedTodos: data['completedTodos'],
+    );
+    if (!mounted) return;
+    context.read<UserProvider>().updateUser(currentUser);
+    isDataLoaded = true;
+  }
 
   @override
   void initState() {
-    // TODO(jose): implement Todos lecture
     super.initState();
   }
 
@@ -38,6 +52,12 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
+                Row(
+                  children: [
+                    Text(context.read<UserProvider>().user.name),
+                    //TODO: Add switch button for dark and light mode
+                  ],
+                ),
                 Text(context.read<DateProvider>().wellcomeMessage),
                 const SizedBox(height: 10),
                 Row(
@@ -69,7 +89,11 @@ class _HomePageState extends State<HomePage> {
                         context.watch<UserProvider>().user.totalTodos,
                   ),
                 ),
-                //TODO(jose): add todo list
+                Visibility(
+                  child: Container(),
+                  visible: isDataLoaded,
+                  replacement: const CircularProgressIndicator.adaptive(),
+                )
               ],
             ),
           ),
