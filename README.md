@@ -1,6 +1,6 @@
 # Ultrac, gestor de tareas
 
-Este es un simple gestor de tareas. Puedes usarlo acá: ultrac.vercel.app. 
+Este es un simple gestor de tareas. Puedes usarlo acá: [ultrac.vercel.app](https://ultrac.vercel.app/#/inicio). 
 
 Por cuestiones de (falta de) tiempo se usó provider para mantener la gestión del estado. 
 
