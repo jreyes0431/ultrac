@@ -14,6 +14,7 @@ class TodoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = context.watch<UserProvider>().user;
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: 450,
@@ -47,7 +48,25 @@ class TodoCard extends StatelessWidget {
                   icon: const Icon(Icons.check_circle_outline),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    currentUser.todoList.removeWhere(
+                      (element) =>
+                          element.description == description &&
+                          element.title == title,
+                    );
+                    Data.removeTask(currentUser);
+
+                    num newTotal = currentUser.totalTodos - 1;
+                    if (newTotal < 0) newTotal = 0.0001;
+
+                    context
+                        .read<UserProvider>()
+                        .updateUserField(newTotal, 'totalTodos');
+
+                    context
+                        .read<UserProvider>()
+                        .updateUserField(currentUser.todoList, 'todoList');
+                  },
                   icon: const Icon(Icons.delete_outline),
                 ),
                 const SizedBox(width: 25),

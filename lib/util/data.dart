@@ -12,6 +12,14 @@ class Data {
     };
   }
 
+  static void removeTask(User user) {
+    user.totalTodos--;
+    String newData = jsonFromTodoList([...user.todoList]);
+    updateUserField(newData, 'todosJson');
+    updateUserField(user.totalTodos, 'totalTodos');
+    updateUserField(user.completedTodos, 'completedTodos');
+  }
+
   ///Recieves a json string and return a List of todos
   static List<Todo> todoListFromJson(String jsonString) {
     if (jsonString.isEmpty) return [];
@@ -62,7 +70,7 @@ class Data {
         ); */
     String newData = jsonFromTodoList([...currentUser.todoList]);
     updateUserField(newData, 'todosJson');
-    updateUserField(currentUser.totalTodos.toInt(), 'totalTodos');
+    updateUserField(currentUser.totalTodos, 'totalTodos');
   }
 
   static void updateUserField(dynamic value, String field) async {
@@ -77,10 +85,10 @@ class Data {
         prefs.setString('surname', value);
         break;
       case 'totalTodos':
-        prefs.setInt('totalTodos', value);
+        prefs.setDouble('totalTodos', value);
         break;
       case 'completedTodos':
-        prefs.setInt('completedTodos', value);
+        prefs.setDouble('completedTodos', value);
         break;
       default:
         log('ERROR: No se reconoce el campo [$field]');
