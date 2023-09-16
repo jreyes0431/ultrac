@@ -1,9 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ultrac/model/model.dart';
-import 'package:ultrac/util/util.dart';
+part of views;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   double screenWidth = 0.0, screenHeigth = 0.0;
   bool isDataLoaded = false;
 
-  void setUser() async {
+  void getData() async {
     Map<String, dynamic> data = await Data.getUserData();
     User currentUser = User(
       name: data['name'],
@@ -31,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    getData();
     super.initState();
   }
 
