@@ -122,7 +122,10 @@ class _TodoCardState extends State<TodoCard> {
                           .updateUserField(newCompleted, 'completedTodos');
                     }
                   },
-                  icon: const Icon(Icons.delete_outline),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.black,
+                  ),
                 ),
                 const SizedBox(width: 25),
               ],
