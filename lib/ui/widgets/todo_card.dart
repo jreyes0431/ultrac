@@ -88,7 +88,6 @@ class _TodoCardState extends State<TodoCard> {
                       Data.jsonFromTodoList([...currentUser.todoList]),
                       'todosJson',
                     );
-                    print(Data.jsonFromTodoList([...currentUser.todoList]));
                   },
                   icon: Icon(
                     isCompleted
