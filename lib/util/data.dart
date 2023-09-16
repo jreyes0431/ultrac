@@ -11,7 +11,7 @@ class Data {
     };
   }
 
-  static void updateUserField(String field, dynamic value) async {
+  static void updateUserField(dynamic value, String field) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (field) {
       case 'name':

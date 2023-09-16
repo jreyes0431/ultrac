@@ -27,8 +27,12 @@ class UserProvider extends ChangeNotifier {
       case 'completedTodos':
         _user.completedTodos = value;
         break;
+      case 'isDarkModeActive':
+        _user.isDarkModeActive = value;
+        break;
       default:
         log('ERROR: No se reconoce el campo [$field]');
     }
+    notifyListeners();
   }
 }

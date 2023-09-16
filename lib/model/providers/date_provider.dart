@@ -13,8 +13,26 @@ class DateProvider extends ChangeNotifier {
     'Domingo',
   ];
 
+  final List<String> formattedMonth = [
+    'Ene',
+    'feb',
+    'mar',
+    'abr',
+    'may',
+    'jun',
+    'jul',
+    'ago',
+    'sep',
+    'oct',
+    'nov',
+    'dic',
+  ];
+
   String get ddmmyyyy =>
       "${_actualTime.day}/${_actualTime.month}/${_actualTime.year}";
+
+  String get dayMonthYear =>
+      "${_actualTime.day} de ${formattedMonth[_actualTime.month - 1]}, ${_actualTime.year}";
 
   String get weekday => formatWeekdays[_actualTime.weekday - 1];
 
