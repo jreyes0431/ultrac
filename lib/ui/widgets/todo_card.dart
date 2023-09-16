@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:ultrac/util/util.dart';
+part of widgets;
 
 class TodoCard extends StatelessWidget {
   const TodoCard({

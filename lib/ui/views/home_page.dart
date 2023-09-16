@@ -17,8 +17,6 @@ class _HomePageState extends State<HomePage> {
         const Duration(seconds: 1)); // Just for simulate charging
     Map<String, dynamic> data = await Data.getUserData();
 
-    print(data.toString());
-
     User currentUser = User(
       name: data['name'],
       surname: data['surname'],
@@ -50,9 +48,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: CustomColors.primary200,
         child: const Icon(Icons.add_rounded, color: CustomColors.text100),
         onPressed: () {
-          context.read<UserProvider>().updateUserField(5, 'totalTodos');
-          context.read<UserProvider>().updateUserField(3, 'completedTodos');
-          //context.go('/nueva-tarea');
+          context.go('/nueva-tarea');
         },
       ),
       body: SingleChildScrollView(
@@ -98,15 +94,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                   */
                   const SizedBox(height: 30),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      CustomDate.wellcomeMessage,
-                      style: CustomTitleStyles.large.copyWith(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 60,
-                      ),
+                  Text(
+                    CustomDate.wellcomeMessage,
+                    style: CustomTitleStyles.large.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 60,
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  Image.asset(
+                    'assets/ultric200.png',
+                    height: 30,
+                    width: 60,
                   ),
                   const SizedBox(height: 30),
                   Row(
