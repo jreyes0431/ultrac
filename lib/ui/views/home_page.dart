@@ -17,13 +17,15 @@ class _HomePageState extends State<HomePage> {
         const Duration(seconds: 1)); // Just for simulate charging
     Map<String, dynamic> data = await Data.getUserData();
 
+    print(data.toString());
+
     User currentUser = User(
       name: data['name'],
       surname: data['surname'],
       totalTodos: data['totalTodos'],
       completedTodos: data['completedTodos'],
       isDarkModeActive: data['isDarkModeActive'] ?? false,
-      todoList: todoListFromJson(data['todosJson'] ?? ''),
+      todoList: Data.todoListFromJson(data['todosJson'] ?? ''),
     );
     if (!mounted) return;
 
@@ -153,11 +155,14 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  LinearProgressIndicator(
-                    color: CustomColors.primary200,
-                    minHeight: 15,
-                    borderRadius: BorderRadius.circular(12),
-                    value: currentUser.completedTodos / currentUser.totalTodos,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: LinearProgressIndicator(
+                      color: CustomColors.primary200,
+                      minHeight: 15,
+                      value:
+                          currentUser.completedTodos / currentUser.totalTodos,
+                    ),
                   ),
                   const SizedBox(height: 30),
                   if (isDataLoaded)

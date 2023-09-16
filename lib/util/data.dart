@@ -12,6 +12,30 @@ class Data {
     };
   }
 
+  ///Recieves a json string and return a List of todos
+  static List<Todo> todoListFromJson(String jsonString) {
+    if (jsonString.isEmpty) return [];
+    final List data = jsonDecode(jsonString);
+    print(data.toString());
+    List<Todo> todoList = [];
+
+    for (var element in data) {
+      Color color = const Color(0xFFfff3b0);
+      if (element['bgColor'] != null) {
+        color = Color(element['bgColor']);
+      }
+      todoList.add(
+        Todo(
+          title: element['title'] ?? '',
+          description: element['description'] ?? '',
+          bgColor: color,
+          isCompleted: element['isCompleted'] ?? '',
+        ),
+      );
+    }
+    return todoList;
+  }
+
   static void updateUserField(dynamic value, String field) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (field) {
