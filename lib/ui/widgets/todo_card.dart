@@ -1,16 +1,32 @@
 part of widgets;
 
-class TodoCard extends StatelessWidget {
+class TodoCard extends StatefulWidget {
   const TodoCard({
     super.key,
     required this.bgColor,
+    required this.index,
     this.title = '',
     this.description = '',
+    this.isCompleted = false,
   });
 
   final Color bgColor;
   final String title;
   final String description;
+  final bool isCompleted;
+  final int index;
+
+  @override
+  State<TodoCard> createState() => _TodoCardState();
+}
+
+class _TodoCardState extends State<TodoCard> {
+  bool isCompleted = false;
+  @override
+  void initState() {
+    super.initState();
+    isCompleted = widget.isCompleted;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +38,7 @@ class TodoCard extends StatelessWidget {
       ),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: bgColor,
+          color: widget.bgColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -31,41 +47,80 @@ class TodoCard extends StatelessWidget {
             Row(
               children: [
                 const SizedBox(width: 25),
-                title.isEmpty
+                widget.title.isEmpty
                     ? const Spacer()
                     : Expanded(
                         child: Text(
-                          title,
+                          widget.title,
                           overflow: TextOverflow.clip,
                           style: CustomTitleStyles.small.copyWith(
-                            color: Colors.black,
+                            color: isCompleted
+                                ? CustomColors.primary200
+                                : Colors.black,
+                            decoration:
+                                isCompleted ? TextDecoration.lineThrough : null,
                           ),
                         ),
                       ),
                 const SizedBox(width: 5),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.check_circle_outline),
+                  onPressed: () {
+                    num newCompleted =
+                        context.read<UserProvider>().completedTodos;
+                    if (isCompleted) {
+                      newCompleted -= 1;
+                    } else {
+                      newCompleted += 1;
+                    }
+
+                    if (newCompleted < 0) newCompleted = 0.0001;
+                    setState(() {
+                      isCompleted = !isCompleted;
+                      currentUser.todoList[widget.index].isCompleted =
+                          isCompleted;
+                    });
+
+                    context.read<UserProvider>().updateUserField(
+                          newCompleted,
+                          'completedTodos',
+                        );
+                    Data.updateUserField(
+                      Data.jsonFromTodoList([...currentUser.todoList]),
+                      'todosJson',
+                    );
+                    print(Data.jsonFromTodoList([...currentUser.todoList]));
+                  },
+                  icon: Icon(
+                    isCompleted
+                        ? Icons.restart_alt
+                        : Icons.check_circle_outline,
+                    color: isCompleted ? CustomColors.primary200 : Colors.black,
+                  ),
                 ),
                 IconButton(
                   onPressed: () {
-                    currentUser.todoList.removeWhere(
-                      (element) =>
-                          element.description == description &&
-                          element.title == title,
+                    currentUser.todoList.removeAt(widget.index);
+                    Data.updateUserField(
+                      Data.jsonFromTodoList([...currentUser.todoList]),
+                      'todosJson',
                     );
-                    Data.removeTask(currentUser);
 
-                    num newTotal = currentUser.totalTodos - 1;
+                    num newTotal = currentUser.todoList.length;
                     if (newTotal < 0) newTotal = 0.0001;
 
                     context
                         .read<UserProvider>()
-                        .updateUserField(newTotal, 'totalTodos');
-
-                    context
-                        .read<UserProvider>()
                         .updateUserField(currentUser.todoList, 'todoList');
+
+                    if (isCompleted) {
+                      num newCompleted =
+                          context.watch<UserProvider>().completedTodos;
+                      newCompleted -= 1;
+                      if (newCompleted < 0) newCompleted = 0.0001;
+                      context
+                          .read<UserProvider>()
+                          .updateUserField(newCompleted, 'completedTodos');
+                    }
                   },
                   icon: const Icon(Icons.delete_outline),
                 ),
@@ -82,10 +137,11 @@ class TodoCard extends StatelessWidget {
               child: Align(
                 alignment: const Alignment(-1, 0),
                 child: Text(
-                  description,
+                  widget.description,
                   textAlign: TextAlign.justify,
                   style: CustomTextStyles.small.copyWith(
-                    color: Colors.black,
+                    color: isCompleted ? CustomColors.primary200 : Colors.black,
+                    decoration: isCompleted ? TextDecoration.lineThrough : null,
                   ),
                 ),
               ),

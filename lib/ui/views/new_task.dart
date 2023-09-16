@@ -125,7 +125,10 @@ class _NewTaskState extends State<NewTask> {
                       bgColor: bgColor,
                     ),
                   ];
-                  Data.addNewtask(currentUser);
+                  Data.updateUserField(
+                    Data.jsonFromTodoList([...currentUser.todoList]),
+                    'todosJson',
+                  );
                   context.go('/inicio');
                 },
                 child: SizedBox(

@@ -5,32 +5,27 @@ class UserProvider extends ChangeNotifier {
 
   User get user => _user;
 
-  void updateUser(User user) {
-    _user.name = user.name;
-    _user.surname = user.surname;
-    _user.completedTodos = user.completedTodos;
-    _user.totalTodos = user.totalTodos;
-    _user.todoList = user.todoList;
-    notifyListeners();
+  num get totalTodos {
+    if (_user.todoList.isEmpty) {
+      return 0.0001;
+    } else {
+      return _user.todoList.length;
+    }
+  }
+
+  num get completedTodos {
+    if (_user.todoList.isEmpty) {
+      return 0.0001;
+    } else {
+      return _user.todoList
+          .where((Todo todo) => todo.isCompleted)
+          .toList()
+          .length;
+    }
   }
 
   void updateUserField(dynamic value, String field) {
     switch (field) {
-      case 'name':
-        _user.name = value;
-        break;
-      case 'surname':
-        _user.surname = value;
-        break;
-      case 'totalTodos':
-        _user.totalTodos = value;
-        break;
-      case 'completedTodos':
-        _user.completedTodos = value;
-        break;
-      case 'isDarkModeActive':
-        _user.isDarkModeActive = value;
-        break;
       case 'todoList':
         _user.todoList = value;
         break;

@@ -6,18 +6,9 @@ class Data {
     return {
       'name': prefs.get('userName') ?? 'Anónimo',
       'surname': prefs.get('usersurname') ?? '',
-      'totalTodos': prefs.get('totalTodos') ?? 0.0001,
       'completedTodos': prefs.get('completedTodos') ?? 0.0001,
       'todosJson': prefs.get('todosJson') ?? '',
     };
-  }
-
-  static void removeTask(User user) {
-    user.totalTodos--;
-    String newData = jsonFromTodoList([...user.todoList]);
-    updateUserField(newData, 'todosJson');
-    updateUserField(user.totalTodos, 'totalTodos');
-    updateUserField(user.completedTodos, 'completedTodos');
   }
 
   ///Recieves a json string and return a List of todos
@@ -36,7 +27,7 @@ class Data {
           title: element['title'] ?? '',
           description: element['description'] ?? '',
           bgColor: color,
-          isCompleted: element['isCompleted'] ?? '',
+          isCompleted: element['isCompleted'] ?? false,
         ),
       );
     }
@@ -59,18 +50,6 @@ class Data {
     }
 
     return jsonEncode(jsonList);
-  }
-
-  static void addNewtask(User currentUser) {
-    currentUser.totalTodos++;
-
-    /* context.read<UserProvider>().updateUserField(
-          currentList,
-          'todoList',
-        ); */
-    String newData = jsonFromTodoList([...currentUser.todoList]);
-    updateUserField(newData, 'todosJson');
-    updateUserField(currentUser.totalTodos, 'totalTodos');
   }
 
   static void updateUserField(dynamic value, String field) async {

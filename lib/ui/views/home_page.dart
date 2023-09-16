@@ -17,17 +17,10 @@ class _HomePageState extends State<HomePage> {
         const Duration(seconds: 1)); // Just for simulate charging
     Map<String, dynamic> data = await Data.getUserData();
 
-    User currentUser = User(
-      name: data['name'],
-      surname: data['surname'],
-      totalTodos: data['totalTodos'],
-      completedTodos: data['completedTodos'],
-      isDarkModeActive: data['isDarkModeActive'] ?? false,
-      todoList: Data.todoListFromJson(data['todosJson'] ?? ''),
-    );
     if (!mounted) return;
 
-    context.read<UserProvider>().updateUser(currentUser);
+    context.read<UserProvider>().updateUserField(
+        Data.todoListFromJson(data['todosJson'] ?? ''), 'todoList');
 
     isDataLoaded = true;
   }
@@ -41,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     User currentUser = context.watch<UserProvider>().user;
+    log('HP completed es ${context.watch<UserProvider>().completedTodos}');
     return Scaffold(
       backgroundColor: CustomColors.dark,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -86,90 +80,80 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            CustomDate.weekday,
-                            style: CustomTextStyles.medium,
-                          ),
-                          Text(
-                            CustomDate.dayMonthYear,
-                            style: CustomTextStyles.disclaimer,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${((currentUser.completedTodos * 100) / currentUser.totalTodos).roundToDouble()}% Tareas',
-                            style: CustomTextStyles.medium,
-                          ),
-                          Text(
-                            'Completadas',
-                            style: CustomTextStyles.disclaimer,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '''${currentUser.completedTodos.toInt()} de ${currentUser.totalTodos.toInt()}''',
-                        style: CustomTextStyles.medium,
-                      ),
-                      Text(
-                        " tareas completadas",
-                        style: CustomTextStyles.medium,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: LinearProgressIndicator(
-                      color: CustomColors.primary200,
-                      minHeight: 15,
-                      value:
-                          currentUser.completedTodos / currentUser.totalTodos,
+                  if (isDataLoaded) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              CustomDate.weekday,
+                              style: CustomTextStyles.medium,
+                            ),
+                            Text(
+                              CustomDate.dayMonthYear,
+                              style: CustomTextStyles.disclaimer,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '${((context.watch<UserProvider>().completedTodos * 100) / context.watch<UserProvider>().totalTodos).roundToDouble()}% Tareas',
+                              style: CustomTextStyles.medium,
+                            ),
+                            Text(
+                              'Completadas',
+                              style: CustomTextStyles.disclaimer,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  if (isDataLoaded)
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '''${context.watch<UserProvider>().completedTodos.toInt()} de ${context.watch<UserProvider>().totalTodos.toInt()}''',
+                          style: CustomTextStyles.medium,
+                        ),
+                        Text(
+                          " tareas completadas",
+                          style: CustomTextStyles.medium,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: LinearProgressIndicator(
+                        color: CustomColors.primary200,
+                        minHeight: 15,
+                        value: context.watch<UserProvider>().completedTodos /
+                            context.watch<UserProvider>().totalTodos,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                     ...List.generate(
                       currentUser.todoList.length,
                       (index) => Padding(
                         padding: const EdgeInsets.all(10),
                         child: TodoCard(
-                          title: context
-                              .watch<UserProvider>()
-                              .user
-                              .todoList[index]
-                              .title,
-                          description: context
-                              .watch<UserProvider>()
-                              .user
-                              .todoList[index]
-                              .description,
-                          bgColor: context
-                              .watch<UserProvider>()
-                              .user
-                              .todoList[index]
-                              .bgColor,
+                          index: index,
+                          title: currentUser.todoList[index].title,
+                          description: currentUser.todoList[index].description,
+                          bgColor: currentUser.todoList[index].bgColor,
+                          isCompleted: currentUser.todoList[index].isCompleted,
                         ),
                       ),
-                    )
-                  else
+                    ),
+                  ] else
                     const CircularProgressIndicator.adaptive(
                       backgroundColor: CustomColors.primary200,
-                    )
+                    ),
                 ],
               ),
             ),
