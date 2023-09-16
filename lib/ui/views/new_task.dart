@@ -38,9 +38,10 @@ class _NewTaskState extends State<NewTask> {
       backgroundColor: bgColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              const SizedBox(height: 30),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -111,7 +112,22 @@ class _NewTaskState extends State<NewTask> {
               ),
               const SizedBox(height: 30),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  if (titleController.text.isEmpty &&
+                      contentController.text.isEmpty) return;
+                  //Gotta do this here because the context is not available outside the build method (bad thing about provider)
+                  User currentUser = context.read<UserProvider>().user;
+                  currentUser.todoList = [
+                    ...currentUser.todoList,
+                    Todo(
+                      title: titleController.text,
+                      description: contentController.text,
+                      bgColor: bgColor,
+                    ),
+                  ];
+                  Data.addNewtask(currentUser);
+                  context.go('/inicio');
+                },
                 child: SizedBox(
                   height: 40,
                   width: 120,

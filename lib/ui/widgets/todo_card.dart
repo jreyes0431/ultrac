@@ -30,15 +30,17 @@ class TodoCard extends StatelessWidget {
             Row(
               children: [
                 const SizedBox(width: 25),
-                Expanded(
-                  child: Text(
-                    title,
-                    overflow: TextOverflow.clip,
-                    style: CustomTitleStyles.small.copyWith(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                title.isEmpty
+                    ? const Spacer()
+                    : Expanded(
+                        child: Text(
+                          title,
+                          overflow: TextOverflow.clip,
+                          style: CustomTitleStyles.small.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.check_circle_outline),

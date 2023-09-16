@@ -16,7 +16,6 @@ class Data {
   static List<Todo> todoListFromJson(String jsonString) {
     if (jsonString.isEmpty) return [];
     final List data = jsonDecode(jsonString);
-    print(data.toString());
     List<Todo> todoList = [];
 
     for (var element in data) {
@@ -34,6 +33,36 @@ class Data {
       );
     }
     return todoList;
+  }
+
+  ///Recieves a List of todos and return a json string
+  static String jsonFromTodoList(List<Todo> todoList) {
+    List<Map<String, dynamic>> jsonList = [];
+
+    for (Todo element in todoList) {
+      jsonList.add(
+        {
+          'title': element.title,
+          'description': element.description,
+          'bgColor': element.bgColor.value,
+          'isCompleted': element.isCompleted,
+        },
+      );
+    }
+
+    return jsonEncode(jsonList);
+  }
+
+  static void addNewtask(User currentUser) {
+    currentUser.totalTodos++;
+
+    /* context.read<UserProvider>().updateUserField(
+          currentList,
+          'todoList',
+        ); */
+    String newData = jsonFromTodoList([...currentUser.todoList]);
+    updateUserField(newData, 'todosJson');
+    updateUserField(currentUser.totalTodos.toInt(), 'totalTodos');
   }
 
   static void updateUserField(dynamic value, String field) async {

@@ -61,38 +61,6 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Column(
                 children: <Widget>[
-                  /* Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.read<UserProvider>().user.name,
-                        style: CustomTextStyles.medium,
-                      ),
-                      Column(
-                        children: [
-                          Switch(
-                            value: context
-                                .read<UserProvider>()
-                                .user
-                                .isDarkModeActive,
-                            activeColor: CustomColors.text100,
-                            inactiveThumbColor: CustomColors.accentDeep100,
-                            onChanged: (bool value) {
-                              setState(() {});
-                              context
-                                  .read<UserProvider>()
-                                  .updateUserField(value, 'isDarkModeActive');
-                            },
-                          ),
-                          Text(
-                            'Modo ${context.read<UserProvider>().user.isDarkModeActive ? 'oscuro' : 'claro'}',
-                            style: CustomTextStyles.disclaimerXs,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  */
                   const SizedBox(height: 30),
                   Text(
                     CustomDate.wellcomeMessage,
@@ -102,10 +70,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Image.asset(
-                    'assets/ultric200.png',
-                    height: 30,
-                    width: 60,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Te damos la bienvenida al gestor de tareas',
+                        style: CustomTextStyles.disclaimer,
+                      ),
+                      const SizedBox(width: 10),
+                      Image.asset(
+                        'assets/ultric200.png',
+                        height: 30,
+                        width: 60,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 30),
                   Row(

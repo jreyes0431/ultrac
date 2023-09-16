@@ -31,6 +31,9 @@ class UserProvider extends ChangeNotifier {
       case 'isDarkModeActive':
         _user.isDarkModeActive = value;
         break;
+      case 'todoList':
+        _user.todoList = value;
+        break;
       default:
         log('ERROR: No se reconoce el campo [$field]');
     }
