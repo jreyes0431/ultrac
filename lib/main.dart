@@ -10,7 +10,6 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DateProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MainApp(),
@@ -31,7 +30,7 @@ class MainApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: CustomColors.primary100,
+          seedColor: CustomColors.primary200,
         ),
       ),
     );

@@ -10,6 +10,7 @@ class UserProvider extends ChangeNotifier {
     _user.surname = user.surname;
     _user.completedTodos = user.completedTodos;
     _user.totalTodos = user.totalTodos;
+    _user.todoList = user.todoList;
     notifyListeners();
   }
 

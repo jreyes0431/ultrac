@@ -8,12 +8,15 @@ class Data {
       'surname': prefs.get('usersurname') ?? '',
       'totalTodos': prefs.get('totalTodos') ?? 0.0001,
       'completedTodos': prefs.get('completedTodos') ?? 0.0001,
+      'todosJson': prefs.get('todosJson') ?? '',
     };
   }
 
   static void updateUserField(dynamic value, String field) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (field) {
+      case 'todosJson':
+        prefs.setString('todosJson', value);
       case 'name':
         prefs.setString('userName', value);
         break;

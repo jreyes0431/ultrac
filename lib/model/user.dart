@@ -6,6 +6,7 @@ class User {
   num totalTodos;
   num completedTodos;
   bool isDarkModeActive;
+  List<Todo> todoList;
 
   User({
     this.name = 'Anónimo',
@@ -13,5 +14,6 @@ class User {
     this.completedTodos = 0.0001,
     this.totalTodos = 0.0001,
     this.isDarkModeActive = false,
+    this.todoList = const [],
   });
 }
