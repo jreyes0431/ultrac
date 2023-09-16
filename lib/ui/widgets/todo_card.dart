@@ -41,9 +41,14 @@ class TodoCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                const SizedBox(width: 5),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.check_circle_outline),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete_outline),
                 ),
                 const SizedBox(width: 25),
               ],
