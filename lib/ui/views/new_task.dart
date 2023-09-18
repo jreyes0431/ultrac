@@ -30,7 +30,21 @@ class _NewTaskState extends State<NewTask> {
 
   Color bgColor = CustomColors.primary300;
   TextEditingController titleController = TextEditingController();
-  TextEditingController contentController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  late User currentUser;
+
+  @override
+  void initState() {
+    currentUser = context.read<UserProvider>().user;
+    if (context.read<UserProvider>().isEditing) {
+      titleController.text =
+          currentUser.todoList[currentUser.indexEditing].title;
+      descriptionController.text =
+          currentUser.todoList[currentUser.indexEditing].description;
+      bgColor = currentUser.todoList[currentUser.indexEditing].bgColor;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +62,9 @@ class _NewTaskState extends State<NewTask> {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
+                      context
+                          .read<UserProvider>()
+                          .updateUserField(-1, 'indexEditing');
                       context.go('/inicio');
                     },
                     icon: const Icon(
@@ -58,7 +75,9 @@ class _NewTaskState extends State<NewTask> {
                   ),
                   const Spacer(),
                   Text(
-                    'Nueva tarea',
+                    context.watch<UserProvider>().isEditing
+                        ? 'Editar tarea'
+                        : 'Nueva tarea',
                     style: CustomTitleStyles.large,
                   ),
                   const Spacer(flex: 2),
@@ -81,7 +100,7 @@ class _NewTaskState extends State<NewTask> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: CustomTextInput(
-                    controller: contentController,
+                    controller: descriptionController,
                     maxLines: 5,
                     hintText:
                         'Contenido de la tarea... Descripción detallada de lo que hay que hacer',
@@ -114,17 +133,27 @@ class _NewTaskState extends State<NewTask> {
               InkWell(
                 onTap: () {
                   if (titleController.text.isEmpty &&
-                      contentController.text.isEmpty) return;
+                      descriptionController.text.isEmpty) return;
                   //Gotta do this here because the context is not available outside the build method (bad thing about provider)
-                  User currentUser = context.read<UserProvider>().user;
-                  currentUser.todoList = [
-                    ...currentUser.todoList,
-                    Todo(
+                  if (context.read<UserProvider>().isEditing) {
+                    currentUser.todoList[currentUser.indexEditing] = Todo(
                       title: titleController.text,
-                      description: contentController.text,
+                      description: descriptionController.text,
                       bgColor: bgColor,
-                    ),
-                  ];
+                    );
+                    context
+                        .read<UserProvider>()
+                        .updateUserField(-1, 'indexEditing');
+                  } else {
+                    currentUser.todoList = [
+                      ...currentUser.todoList,
+                      Todo(
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        bgColor: bgColor,
+                      ),
+                    ];
+                  }
                   Data.updateUserField(
                     Data.jsonFromTodoList([...currentUser.todoList]),
                     'todosJson',
@@ -133,7 +162,7 @@ class _NewTaskState extends State<NewTask> {
                 },
                 child: SizedBox(
                   height: 40,
-                  width: 120,
+                  width: context.read<UserProvider>().isEditing ? 180 : 140,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -148,11 +177,16 @@ class _NewTaskState extends State<NewTask> {
                       ],
                     ),
                     child: Center(
-                      child: Text(
-                        'Guardar tarea',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.medium
-                            .copyWith(color: CustomColors.text100),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          context.watch<UserProvider>().isEditing
+                              ? 'Guardar cambios'
+                              : 'Guardar tarea',
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyles.medium
+                              .copyWith(color: CustomColors.text100),
+                        ),
                       ),
                     ),
                   ),

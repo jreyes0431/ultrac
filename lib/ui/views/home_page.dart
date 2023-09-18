@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     User currentUser = context.watch<UserProvider>().user;
-    log('HP completed es ${context.watch<UserProvider>().completedTodos}');
     return Scaffold(
       backgroundColor: CustomColors.dark,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   const SizedBox(height: 30),
                   Text(
-                    CustomDate.wellcomeMessage,
+                    CustomDateTime.wellcomeMessage,
                     style: CustomTitleStyles.large.copyWith(
                       fontWeight: FontWeight.w300,
                       fontSize: 60,
@@ -88,11 +87,11 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              CustomDate.weekday,
+                              CustomDateTime.weekday,
                               style: CustomTextStyles.medium,
                             ),
                             Text(
-                              CustomDate.dayMonthYear,
+                              CustomDateTime.dayMonthYear,
                               style: CustomTextStyles.disclaimer,
                             ),
                           ],
@@ -142,11 +141,17 @@ class _HomePageState extends State<HomePage> {
                       (index) => Padding(
                         padding: const EdgeInsets.all(10),
                         child: TodoCard(
+                          key: Key('todoCard-$index'),
+                          onTap: () {
+                            context
+                                .read<UserProvider>()
+                                .updateUserField(index, 'indexEditing');
+                            context.go('/editar-tarea');
+                          },
                           index: index,
                           title: currentUser.todoList[index].title,
                           description: currentUser.todoList[index].description,
                           bgColor: currentUser.todoList[index].bgColor,
-                          isCompleted: currentUser.todoList[index].isCompleted,
                         ),
                       ),
                     ),

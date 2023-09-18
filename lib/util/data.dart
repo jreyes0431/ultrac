@@ -57,18 +57,6 @@ class Data {
     switch (field) {
       case 'todosJson':
         prefs.setString('todosJson', value);
-      case 'name':
-        prefs.setString('userName', value);
-        break;
-      case 'surname':
-        prefs.setString('surname', value);
-        break;
-      case 'totalTodos':
-        prefs.setDouble('totalTodos', value);
-        break;
-      case 'completedTodos':
-        prefs.setDouble('completedTodos', value);
-        break;
       default:
         log('ERROR: No se reconoce el campo [$field]');
     }

@@ -62,7 +62,7 @@ class CustomTitleStyles {
   );
 }
 
-class CustomDate {
+extension CustomDateTime on DateTime {
   static final DateTime _actualTime = DateTime.now().toLocal();
 
   static final List<String> formatWeekdays = [

@@ -5,6 +5,8 @@ class UserProvider extends ChangeNotifier {
 
   User get user => _user;
 
+  bool get isEditing => _user.indexEditing != -1;
+
   num get totalTodos {
     if (_user.todoList.isEmpty) {
       return 0.0001;
@@ -28,6 +30,9 @@ class UserProvider extends ChangeNotifier {
     switch (field) {
       case 'todoList':
         _user.todoList = value;
+        break;
+      case 'indexEditing':
+        _user.indexEditing = value;
         break;
       default:
         log('ERROR: No se reconoce el campo [$field]');

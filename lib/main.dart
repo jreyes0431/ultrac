@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Ultrack',
+      title: 'Ultrack Task Manager',
       routerConfig: router,
       theme: ThemeData(
         textTheme: GoogleFonts.robotoTextTheme(
