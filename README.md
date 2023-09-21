@@ -12,4 +12,6 @@ Hay mucho margen de mejora. Seguiré añadiendo features en la medida de lo posi
 
 Para ejecutarlo simplemente basta con clonar el proyecto, asegurarse de cumplir los requisitos de SDK, seleccionar el dispositivo deseado y ejecutar.
 
+Un pequeño diagrama para ilustrar: 
 
+![Untitled-2023-09-16-0919](https://github.com/jreyes0431/ultrac/assets/22567612/bebe3a7a-d12c-4321-8c62-14b94201acbd)
